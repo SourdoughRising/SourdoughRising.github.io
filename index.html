@@ -1,170 +1,109 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Survey</title>
-    <script>
-        /*         function handleAnswerElaborate(questionId) {
-                    const textField = document.getElementById(`elaborate-${questionId}`);
-                    textField.style.display = "block";
-                } */
-
-        function handleAnswerElaborate(questionId) {
-
-            if (!document.getElementById("elaborate-" + questionId)) {
-                const elaboration = document.createElement('div');
-
-                elaboration.id = "elaborate-" + questionId;
-                console.log("elaborating " + questionId);
-                elaboration.innerHTML =
-                    `   Was the food available and plentiful?</label>
-<input type="checkbox" name="available-${questionId}" value="available">Available
-
-<input type="checkbox" name="plentiful-${questionId}" value="plentiful">Plentiful
-<br>Please tell us what items you selected
-<textarea id="hotfood-items" name="hotfood-comment" placeholder="Separate your answers with spaces and/or commas" ></textarea>
-<br>On a scale of 1-5, how appetizing did your food appear?<br>
-<input type="radio" name="${questionId + "-appetizing"}" value=1>1
-<input type="radio" name="${questionId + "-appetizing"}" value=2>2
-<input type="radio" name="${questionId + "-appetizing"}" value=3>3
-<input type="radio" name="${questionId + "-appetizing"}" value=4>4
-<input type="radio" name="${questionId + "-appetizing"}" value=5>5<br>
-
-`
-
-document.getElementById(questionId).append(elaboration);
-
-            }
-            else{
-                console.log(document.getElementById("elaborate-" + questionId))
-                document.getElementById("elaborate-" + questionId).remove();
-                console.log(questionId + " elaboration removed");
-            }
-
-        }
-
-        function handleAddDateTime(elementId)
-        {
-            //appends a datetime field to the element id
-            if(!document.getElementById(elementId + '-date-time'))
-            {
-                const myEle = document.getElementById(elementId);
-                const myDateTime = document.createElement('input');
-                myDateTime.id = elementId + '-date-time';
-                myDateTime.type = 'datetime-local';
-                myDateTime.name = 'datetime-field'
-                const now = new Date();
-                const twentyFourHoursAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
-                myDateTime.min = twentyFourHoursAgo.toISOString().slice(0,16);
-                myDateTime.value = now.toISOString().slice(0,16);
-                myDateTime.max = myDateTime.value;
-                myEle.append(myDateTime);
-                console.log("Added datetime to element with id " + elementId);
-            }
-
-        }
-
-        window.onload = function()
-        {
-            handleAddDateTime('survey-dt');
-            const surveyDT = document.getElementById('survey-dt-date-time');
-        }
-
-        
-
-        async function submitSurvey(event) {
-            event.preventDefault();
-            const formData = new FormData(event.target);
-
-            // Convert form data to JSON
-            const data = Object.fromEntries(formData);
-
-            // Send email using a backend service (e.g., Node.js, SMTP server)
-            await fetch('/submit-survey', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            });
-
-            alert("Survey submitted successfully!");
-        }
-
-    </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Linecraft Prototype</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
-
 <body>
-    <h1>Sag River Dining Area Survey</h1>
+  <header class="topbar">
+    <div>
+      <h1>Linecraft</h1>
+      <p>Industrial kitchen assembly-line prototype</p>
+    </div>
+    <div class="service-stats">
+      <div><span id="cash">$500</span><small>Cash</small></div>
+      <div><span id="reputation">100%</span><small>Safety</small></div>
+      <div><span id="ticketCount">0</span><small>Open Tickets</small></div>
+    </div>
+  </header>
 
-    <h3>All data is gathered anonymously for the sole purpose of improving our guests' experience. Thank you for your
-        participation!</h3>
-    <form onsubmit="submitSurvey(event)">
+  <main class="app-shell">
+    <nav class="station-nav" aria-label="Stations">
+      <button class="station-tab active" data-station="coldLine">Cold Line</button>
+      <button class="station-tab" data-station="hotLine">Hot Line</button>
+      <button class="station-tab" data-station="walkIn">Walk-In</button>
+      <button class="station-tab" data-station="dryStorage">Dry Storage</button>
+      <button class="station-tab" data-station="dishPit">Dish Pit</button>
+      <button class="station-tab" data-station="expo">Expo</button>
+    </nav>
 
-        Date of survey (you can backdate up to 24 hours): <div id="survey-dt"></div>
-        <label>1. Did you wash your hands before entering the dining area?</label><br>
-        <input type="radio" name="handwash" value="true"> Yes
-        <input type="radio" name="handwash" value="false"> No
-        <!--<textarea id="text-1" name="q1-comment" placeholder="Add a comment..." style="display:none;"></textarea>-->
-        <br><br>
+    <section class="workspace">
+      <aside class="left-panel">
+        <section class="card">
+          <h2>Pan Builder</h2>
+          <p class="hint">Select a pan, then click an empty space inside a full-pan bay. All pans snap to the 6×6 hotel-pan footprint.</p>
+          <div class="toolbar" id="panTools"></div>
+          <button id="clearSelectedBay" class="secondary">Clear Selected Bay</button>
+        </section>
 
-        <label>2. Did you wear a glove while grabbing items?</label><br>
-        <input type="radio" name="glove" value="true"> Yes
-        <input type="radio" name="glove" value="false"> No
-        <!--<textarea id="text-1" name="q2-comment" placeholder="Add a comment..." style="display:none;"></textarea>-->
-        <br><br>
+        <section class="card">
+          <h2>Food Fill</h2>
+          <p class="hint">Click a placed pan, then choose food. Food textures flex to any pan size.</p>
+          <div class="food-grid" id="foodTools"></div>
+        </section>
 
-        <label>3. What time did you dine with us?</label><br>
-        <input type="radio" name="dineTime" value="breakfast">Breakfast
-        <input type="radio" name="dineTime" value="lunch">Lunch
-        <input type="radio" name="dineTime" value="Dinner">Dinner
-        <input  type="radio" name="dineTime" value="other" onchange="handleAddDateTime('3-other')">Other
-        <div id = "3-other"></div>
-        <br><br>
+        <section class="card">
+          <h2>Selected Pan</h2>
+          <div id="selectedInfo" class="selected-info">No pan selected.</div>
+          <div class="row-actions">
+            <button id="tempDown" class="secondary">Temp -5°F</button>
+            <button id="tempUp" class="secondary">Temp +5°F</button>
+          </div>
+          <button id="thermometerBtn">Check Thermometer</button>
+        </section>
+      </aside>
 
-        <label>4. Which areas did you get food from?</label><br>
-        <input type="checkbox" name="hotfood" value="1" onchange="handleAnswerElaborate('hotfood')"> Hot food line<br>
-        <div id="hotfood"></div>
+      <section class="center-stage">
+        <div class="station-title-row">
+          <div>
+            <h2 id="stationTitle">Cold Line</h2>
+            <p id="stationDescription">Design a refrigerated assembly line using full, half, and shotgun hotel pans.</p>
+          </div>
+          <button id="addTicketBtn">Generate Order</button>
+        </div>
 
-        <input type="checkbox" name="coldfood" value="2" onchange="handleAnswerElaborate('coldfood')"> Cold food
-        line<br>
-        <div id="coldfood"></div>
+        <div class="prep-table">
+          <div class="rail-label">Cold-hold table / hotel-pan rail</div>
+          <div id="bayRack" class="bay-rack"></div>
+          <div class="table-front">
+            <div class="vents"></div>
+            <div class="drawer"></div>
+            <div class="drawer wide"></div>
+          </div>
+        </div>
+      </section>
 
-        <input type="checkbox" name="coffee" value="3" onchange="handleAnswerElaborate('coffee')"> Coffee bar<br>
-        <div id="coffee"></div>
+      <aside class="right-panel">
+        <section class="card">
+          <h2>Expo Tickets</h2>
+          <div id="tickets" class="tickets"></div>
+        </section>
 
-        <input type="checkbox" name="soda" value="3" onchange="handleAnswerElaborate('soda')"> Soda Fountain<br>
-        <div id="soda"></div>
+        <section class="card">
+          <h2>Inventory</h2>
+          <table class="inventory-table">
+            <thead><tr><th>Item</th><th>Qty</th><th>Temp</th></tr></thead>
+            <tbody id="inventoryBody"></tbody>
+          </table>
+          <button id="buyStockBtn" class="secondary">Buy Low Stock</button>
+        </section>
 
-        <input type="checkbox" name="pantry" value="4" onchange="handleAnswerElaborate('pantry')"> Dry food (Pantry)<br>
-        <div id="pantry"></div>
+        <section class="card log-card">
+          <h2>Safety Log</h2>
+          <div id="safetyLog" class="safety-log"></div>
+        </section>
+      </aside>
+    </section>
+  </main>
 
-        <input type="checkbox" name="bevcooler" value="5" onchange="handleAnswerElaborate('bevcooler')"> Beverage
-        cooler<br>
-        <div id="bevcooler"></div>
+  <template id="bayTemplate">
+    <div class="bay">
+      <div class="bay-grid"></div>
+    </div>
+  </template>
 
-        <input type="checkbox" name="spikecooler" value="6" onchange="handleAnswerElaborate('spikecooler')"> Cold food
-        cooler (Spike)<br>
-        <div id="spikecooler"></div>
-
-        <input type="checkbox" name="bakery" value="7" onchange="handleAnswerElaborate('bakery')"> Desserts (Bakery)<br>
-        <div id="bakery"></div>
-
-        <br><br>
-
-        <label>Did you eat in the dining area and/or take food to go?</label><br>
-        <input type="radio" name="inORout" value="in">Dining room
-        <input type="radio" name="inORout" value="out">To-go
-        <input type="radio" name="inORout" value="both">Both
-
-<br><br>
-
-        <label>Comments or suggestions:</label><br>
-        <textarea name="comments" placeholder="Additional comments..."></textarea>
-        <br><br>
-
-        <button type="submit">Submit</button>
-    </form>
+  <script src="game.js"></script>
 </body>
-
 </html>
