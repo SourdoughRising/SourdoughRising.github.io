@@ -1,34 +1,42 @@
-# Linecraft Prototype
+# Linecraft: Hotel Kitchen Prototype
 
-A static browser prototype for an industrial kitchen simulator. It includes:
+A GitHub Pages-ready static prototype for a browser-based industrial hotel kitchen simulator.
 
-- Station navigation
-- Hotel pan layout builder
-- Correct full / half / shotgun pan footprint logic
-- Flexible food textures clipped into any pan size
-- Inventory panel
-- Expo ticket generator
-- Thermometer checks and safety log
+## What changed in this reform
 
-## Deploy on GitHub Pages
+- Rebuilt the kitchen around professional hotel-kitchen flow:
+  - Receiving Dock
+  - Dry Storage
+  - Walk-In Cooler
+  - Protein Prep
+  - Vegetable Prep
+  - Sauce/Starch Prep
+  - Cold Line
+  - Hot Line
+  - Expo / Pass
+  - Banquet Holding
+  - Dish Pit
+- Added a single top-down virtual kitchen map.
+- Added clean food flow and dirty dish return separation.
+- Added a hotel-pan table builder.
+- Correct pan proportions:
+  - Full pan: 6 x 6
+  - Half pan: 3 x 6
+  - Shotgun pan: 6 x 3
+- Added flexible food texture fills that clip inside any pan size.
+- Added station actions, inventory, expo tickets, thermometer checks, safety/service log, and inspection score.
 
-1. Create a new GitHub repository, for example `linecraft-prototype`.
-2. Upload these files to the root of the repository:
-   - `index.html`
-   - `styles.css`
-   - `game.js`
-   - `README.md`
-3. In GitHub, open **Settings** → **Pages**.
-4. Under **Build and deployment**, set the source to **Deploy from a branch**.
+## How to deploy on GitHub Pages
+
+1. Create a new GitHub repository.
+2. Upload `index.html`, `styles.css`, `game.js`, and `README.md` to the root of the repo.
+3. Go to **Settings → Pages**.
+4. Under **Build and deployment**, choose **Deploy from a branch**.
 5. Choose the `main` branch and `/root` folder.
-6. Save. GitHub will publish the project as a website.
+6. Save.
 
-## Pan sizing system
+Your prototype should publish as a GitHub Pages website.
 
-Each full hotel-pan bay is a 6×6 grid.
+## Notes
 
-- Full pan: 6×6
-- Half pan: 3×6, two fit side-by-side across the long side
-- Shotgun pan: 6×3, two fit stacked across the short side
-
-Food is not baked into the pan image. It is a repeatable top-down texture clipped inside the selected pan.
+This is a static frontend prototype. It does not need a server or database yet. The next major step would be adding save/load through LocalStorage and splitting the data into JSON files for ingredients, recipes, stations, equipment, and pan layouts.

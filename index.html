@@ -1,108 +1,118 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Linecraft Prototype</title>
+  <title>Linecraft: Hotel Kitchen Prototype</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <header class="topbar">
     <div>
-      <h1>Linecraft</h1>
-      <p>Industrial kitchen assembly-line prototype</p>
+      <h1>Linecraft: Hotel Kitchen Prototype</h1>
+      <p>Flow: Receiving → Storage → Prep → Line → Expo → Service. Keep dirty return away from clean food flow.</p>
     </div>
-    <div class="service-stats">
-      <div><span id="cash">$500</span><small>Cash</small></div>
-      <div><span id="reputation">100%</span><small>Safety</small></div>
-      <div><span id="ticketCount">0</span><small>Open Tickets</small></div>
+    <div class="stats">
+      <span>Cash <b id="cash">$850</b></span>
+      <span>Inspection <b id="inspection">100</b></span>
+      <span>Service <b id="clock">06:00</b></span>
     </div>
   </header>
 
   <main class="app-shell">
-    <nav class="station-nav" aria-label="Stations">
-      <button class="station-tab active" data-station="coldLine">Cold Line</button>
-      <button class="station-tab" data-station="hotLine">Hot Line</button>
-      <button class="station-tab" data-station="walkIn">Walk-In</button>
-      <button class="station-tab" data-station="dryStorage">Dry Storage</button>
-      <button class="station-tab" data-station="dishPit">Dish Pit</button>
-      <button class="station-tab" data-station="expo">Expo</button>
-    </nav>
-
-    <section class="workspace">
-      <aside class="left-panel">
-        <section class="card">
-          <h2>Pan Builder</h2>
-          <p class="hint">Select a pan, then click an empty space inside a full-pan bay. All pans snap to the 6×6 hotel-pan footprint.</p>
-          <div class="toolbar" id="panTools"></div>
-          <button id="clearSelectedBay" class="secondary">Clear Selected Bay</button>
-        </section>
-
-        <section class="card">
-          <h2>Food Fill</h2>
-          <p class="hint">Click a placed pan, then choose food. Food textures flex to any pan size.</p>
-          <div class="food-grid" id="foodTools"></div>
-        </section>
-
-        <section class="card">
-          <h2>Selected Pan</h2>
-          <div id="selectedInfo" class="selected-info">No pan selected.</div>
-          <div class="row-actions">
-            <button id="tempDown" class="secondary">Temp -5°F</button>
-            <button id="tempUp" class="secondary">Temp +5°F</button>
-          </div>
-          <button id="thermometerBtn">Check Thermometer</button>
-        </section>
-      </aside>
-
-      <section class="center-stage">
-        <div class="station-title-row">
-          <div>
-            <h2 id="stationTitle">Cold Line</h2>
-            <p id="stationDescription">Design a refrigerated assembly line using full, half, and shotgun hotel pans.</p>
-          </div>
-          <button id="addTicketBtn">Generate Order</button>
-        </div>
-
-        <div class="prep-table">
-          <div class="rail-label">Cold-hold table / hotel-pan rail</div>
-          <div id="bayRack" class="bay-rack"></div>
-          <div class="table-front">
-            <div class="vents"></div>
-            <div class="drawer"></div>
-            <div class="drawer wide"></div>
-          </div>
-        </div>
-      </section>
-
-      <aside class="right-panel">
-        <section class="card">
-          <h2>Expo Tickets</h2>
-          <div id="tickets" class="tickets"></div>
-        </section>
-
-        <section class="card">
-          <h2>Inventory</h2>
-          <table class="inventory-table">
-            <thead><tr><th>Item</th><th>Qty</th><th>Temp</th></tr></thead>
-            <tbody id="inventoryBody"></tbody>
-          </table>
-          <button id="buyStockBtn" class="secondary">Buy Low Stock</button>
-        </section>
-
-        <section class="card log-card">
-          <h2>Safety Log</h2>
-          <div id="safetyLog" class="safety-log"></div>
-        </section>
-      </aside>
+    <section class="kitchen-panel card">
+      <div class="section-head">
+        <h2>Virtual Hotel Kitchen Layout</h2>
+        <p>Click a station. Lines show intended professional workflow.</p>
+      </div>
+      <div class="kitchen-map" id="kitchenMap">
+        <div class="flow-line food-flow"></div>
+        <div class="flow-line dish-flow"></div>
+        <button class="station receiving" data-station="receiving"><b>Receiving Dock</b><small>deliveries, invoices</small></button>
+        <button class="station dry" data-station="dry"><b>Dry Storage</b><small>bulk shelf goods</small></button>
+        <button class="station walkin" data-station="walkin"><b>Walk-In Cooler</b><small>cold storage, FIFO</small></button>
+        <button class="station protein" data-station="protein"><b>Protein Prep</b><small>raw boards, portioning</small></button>
+        <button class="station veg" data-station="veg"><b>Vegetable Prep</b><small>wash, chop, pans</small></button>
+        <button class="station starch" data-station="starch"><b>Sauce/Starch Prep</b><small>batch prep</small></button>
+        <button class="station cold" data-station="cold"><b>Cold Line</b><small>hotel pan table</small></button>
+        <button class="station hot" data-station="hot"><b>Hot Line</b><small>cook, hold, reheat</small></button>
+        <button class="station expo" data-station="expo"><b>Expo / Pass</b><small>tickets, temp check</small></button>
+        <button class="station banquet" data-station="banquet"><b>Banquet Holding</b><small>hot boxes, carts</small></button>
+        <button class="station dish" data-station="dish"><b>Dish Pit</b><small>dirty in → clean out</small></button>
+      </div>
+      <div class="legend">
+        <span><i class="green"></i> clean food flow</span>
+        <span><i class="red"></i> dirty dish return</span>
+      </div>
     </section>
+
+    <aside class="station-panel card">
+      <div class="section-head">
+        <h2 id="stationTitle">Cold Line</h2>
+        <p id="stationDesc">Build the hotel-pan assembly line for service.</p>
+      </div>
+      <div id="stationActions" class="actions"></div>
+      <div id="stationDetails" class="station-details"></div>
+    </aside>
   </main>
 
-  <template id="bayTemplate">
-    <div class="bay">
-      <div class="bay-grid"></div>
+  <section class="builder-grid">
+    <div class="card pan-builder">
+      <div class="section-head">
+        <h2>Hotel Pan Table Builder</h2>
+        <p>Each bay is a full hotel pan footprint. Full = 6×6, Half = 3×6, Shotgun = 6×3.</p>
+      </div>
+      <div class="builder-controls">
+        <label>Bay
+          <select id="baySelect"></select>
+        </label>
+        <label>Pan
+          <select id="panType">
+            <option value="full">Full Pan</option>
+            <option value="half">Half Pan</option>
+            <option value="shotgun">Shotgun Pan</option>
+          </select>
+        </label>
+        <label>Food
+          <select id="foodType"></select>
+        </label>
+        <button id="addPanBtn">Place Pan</button>
+        <button id="clearBayBtn" class="ghost">Clear Bay</button>
+      </div>
+      <div class="cold-table" id="coldTable"></div>
     </div>
-  </template>
+
+    <div class="card">
+      <div class="section-head">
+        <h2>Inventory & Prep Movement</h2>
+        <p>Use the station map and buttons to move ingredients through the kitchen.</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Item</th><th>State</th><th>Qty</th><th>Location</th><th>Temp</th><th>Status</th></tr></thead>
+          <tbody id="inventoryBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="bottom-grid">
+    <div class="card">
+      <div class="section-head">
+        <h2>Expo Tickets</h2>
+        <p>Serve dishes only after safe cooking/holding and thermometer checks.</p>
+      </div>
+      <div class="actions"><button id="newTicketBtn">Generate Ticket</button><button id="serveTicketBtn">Serve Oldest Ticket</button></div>
+      <div id="tickets" class="tickets"></div>
+    </div>
+    <div class="card">
+      <div class="section-head">
+        <h2>Safety & Service Log</h2>
+        <p>Unsafe service, missing checks, cross-flow problems, and station warnings appear here.</p>
+      </div>
+      <div id="log" class="log"></div>
+    </div>
+  </section>
 
   <script src="game.js"></script>
 </body>
