@@ -49,4 +49,11 @@ dialog::backdrop{background:#15345766}#toast{background:#214f83;box-shadow:0 8px
 @media(max-width:700px){.sidebar{background:#fff}.brand{font-size:25px}.brandmark{padding:13px 10px}.brand span:not(.brandmark){font-size:8px}.topbar{border-top:1px solid #e0e8f4}.card,.panel{border-radius:13px}.metric{font-size:34px}.page-head{padding:0}.panel-head{flex-wrap:wrap}}
 @media(prefers-reduced-motion:reduce){button{transition:none}}
 @media print{body{background:white}h1,h2,h3{color:black}}
-
+/* Guided temperature entry */
+.temperature-control{display:grid;grid-template-columns:minmax(100px,1fr) 90px;gap:8px 12px;align-items:center;padding:12px;background:#edf4fb;border:1px solid #c5d9ed;border-radius:12px}
+.temperature-control input[type=range]{width:100%;min-height:36px;padding:0;accent-color:var(--blue);cursor:pointer}
+.temperature-control input[type=number]{width:100%;min-width:0}
+.temperature-control .temperature-bounds{font-size:.75rem;text-align:right;color:#52677e}
+.temperature-control.unrecorded input[type=range]{opacity:.55}
+.guided-help{border-left:3px solid var(--pink);padding:8px 12px;background:#fff1f7;border-radius:4px}
+#record-form :is(input,select,textarea):focus-visible{outline:3px solid var(--pink);outline-offset:3px}
