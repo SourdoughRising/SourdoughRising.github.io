@@ -108,3 +108,5 @@ dialog::backdrop{background:#15345766}#toast{background:#214f83;box-shadow:0 8px
  #print-area .menu-sheet th[scope=row]{font-size:10pt}
  #print-area .sheet-signoff{clear:both;margin:6pt 0 0;padding:4pt 0}
 }
+
+.sync-diff{white-space:pre-wrap;overflow-wrap:anywhere;max-height:220px;overflow:auto;font-size:12px}.sync-diff img{max-width:100%}
