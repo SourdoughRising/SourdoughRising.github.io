@@ -19,7 +19,7 @@ export function generateDemo(from,through){
  const usage={};
  meals.forEach((meal,m)=>{
  const keys=m===0?['milk','oats','apple']:m===1?['milk','chicken','rice','broccoli','apple']:['yogurt','banana'];
- totals.forEach((count,a)=>keys.forEach(key=>{const ingredient=ingredients.find(v=>v[0]===key),unit=ingredient[3],portion=key==='milk'?(a===2?.75:.5):key==='chicken'?(a===2?1.5:1):key==='yogurt'?(a===2?2:1):key==='banana'?(a===2?.5:.25):key==='apple'&&m===0?(a===2?.5:.25):.25;
+ totals.forEach((count,a)=>keys.forEach(key=>{const ingredient=ingredients.find(v=>v[0]===key),unit=ingredient[3],portion=key==='milk'?(a===2?.75:.5):key==='chicken'?(a===2?1.5:1):key==='yogurt'?2:key==='banana'?.5:key==='apple'&&m===0?(a===2?.5:.25):.25;
  const adults=a===2?adultTotal:0,quantity=(count+adults)*portion;
  const food=key==='milk'?(a===0?'Unflavored whole milk':'Unflavored 1% milk'):ingredient[1];
  add('production',date,{meal,age:['Age 1','Age 2','Ages 3–5'][a],food:'DEMO '+food,component:ingredient[2],portion:`${portion} ${unit}`,planned:String(count),adultPortions:String(adults),quantity:`${quantity} ${unit}`,leftovers:'0 — all portions issued for service',actual:food,credit:'DEMO crediting sheet; hypothetical standard product',wgr:['oats','rice'].includes(key)?'Yes — documentation held':'Not applicable',sugar:key==='yogurt'?'Verified against current limit':'Not applicable'});
@@ -39,5 +39,6 @@ export function generateDemo(from,through){
  add('training',days[0],{topic:'DEMO kitchen food-safety and CACFP orientation',location:'Synthetic training provider',participants:'QA / DEMO attendance register',document:'DEMO training record — not a real certificate',due:''});
  validateBackup(s);return {state:s,days:days.length};
 }
+
 
 
