@@ -86,3 +86,4 @@ dialog::backdrop{background:#15345766}#toast{background:#214f83;box-shadow:0 8px
  #print-area th,#print-area td{print-color-adjust:exact;-webkit-print-color-adjust:exact}
 }
 @media print{#print-area .report-sheet:first-of-type{break-before:auto}#print-area tfoot{display:table-row-group}#print-area tfoot td,#print-area tfoot th{font-weight:bold;background:#dce8f5}}
+.menu{min-width:900px}.menu textarea{min-height:130px}.menu th[scope="row"]{vertical-align:middle}
