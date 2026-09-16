@@ -34,7 +34,7 @@ export function validateRecord(record,records){
  if(record.type==='diets'&&record.end&&record.end<record.date)errors.push('End date must not precede start date.');
  if(record.type==='cooling'&&record.end<=record.start)errors.push('Finish must be after start.');
  if(record.type==='corrective'&&record.status==='Closed'&&(!record.verification||!record.verifiedBy))errors.push('Closure requires verification and verifier initials.');
- if(record.result==='Action required'&&!record.action)errors.push('Record the corrective action or follow-up reference.');
+ if(record.result==='Action required'&&!record.action&&!(record.type==='cold'&&record.notes?.trim()))errors.push('Record the corrective action or follow-up reference.');
  if(record.type==='waste'&&record.kind==='Stock waste'&&(!record.productId||!record.lot))errors.push('Stock waste requires a product and lot.');
  if(['receiving','use'].includes(record.type)||record.type==='waste'&&record.kind==='Stock waste'){
   const p=other.find(r=>r.id===record.productId&&r.type==='product');
@@ -55,3 +55,15 @@ export function validateBackup(s){
  return s;
 }
 
+// Saved submissions supply the equipment list; opening/cancelling a form never advances it.
+export function storageDefaults(records,date,equipment,now=new Date()){
+ const cold=records.filter(r=>r.type==='cold'&&r.equipment?.trim()&&r.date<=date);
+ const key=s=>s.trim().toLowerCase(),unique=rows=>[...new Map(rows.map(r=>[key(r.equipment),r.equipment.trim()])).values()];
+ const prior=new Date(date+'T12:00:00');prior.setDate(prior.getDate()-1);const yesterday=localDate(prior);
+ const ordered=unique([...cold.filter(r=>r.date===yesterday),...cold]);
+ const today=cold.filter(r=>r.date===date);
+ const selected=equipment===undefined?(ordered[today.length%ordered.length]||''):equipment;
+ const last=cold.filter(r=>key(r.equipment)===key(selected)).sort((a,b)=>(a.updatedAt||a.date).localeCompare(b.updatedAt||b.date)).at(-1);
+ const kind=last?.kind||'';
+ return {equipment:selected,kind,temperature:last?.temperature??'',target:kind==='Freezer'?'0 °F':kind==='Refrigerator'?'35 °F':'',time:`${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`,options:ordered};
+}
