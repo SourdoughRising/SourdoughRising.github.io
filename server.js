@@ -1,0 +1,20 @@
+import express from 'express';
+import {fileURLToPath} from 'node:url';
+import {resolve} from 'node:path';
+import {openStores} from './sync-store.js';
+import {syncApi} from './sync-api.js';
+const stores=openStores(resolve(process.env.DATA_DIR||'./data'));
+const app=express();
+app.disable('x-powered-by');
+app.use((req,res,next)=>{
+ res.setHeader('X-Content-Type-Options','nosniff');
+ res.setHeader('Referrer-Policy','no-referrer');
+ res.setHeader('Content-Security-Policy',"default-src 'self'; connect-src 'self' https: http://localhost:* http://127.0.0.1:*; img-src 'self' data: blob:; script-src 'self'; style-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'");
+ next();
+});
+app.use('/api/sync',syncApi(stores,{prodKey:process.env.PROD_SYNC_KEY,debugKey:process.env.DEBUG_SYNC_KEY,origins:(process.env.SYNC_ORIGINS||'https://sourdoughrising.github.io').split(',').map(s=>s.trim())}));
+app.get('/health',(_req,res)=>res.json({status:'ok',storage:'separate-prod-debug-sqlite',version:'0.1.0'}));
+app.use(express.static(fileURLToPath(new URL('./ccs-kitchen',import.meta.url)),{setHeaders(res,path){if(path.endsWith('sw.js'))res.setHeader('Cache-Control','no-cache');}}));
+const port=Number(process.env.PORT||3000);
+const server=app.listen(port,process.env.HOST||(process.env.RENDER?'0.0.0.0':'127.0.0.1'),()=>console.log(`Kitchen sync server listening on port ${port}`));
+for(const signal of ['SIGINT','SIGTERM'])process.on(signal,()=>server.close(()=>{stores.close();process.exit(0);}));
