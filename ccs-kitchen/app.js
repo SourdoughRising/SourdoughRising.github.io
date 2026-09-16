@@ -63,7 +63,7 @@ function storageForm(form,editing){
  const field=name=>form.elements.namedItem(name),list=document.createElement('datalist');list.id='storage-equipment';field('equipment').setAttribute('list',list.id);field('equipment').autocomplete='off';form.append(list);
  const populate=()=>{list.innerHTML=storageDefaults(state.records,field('date').value).options.map(value=>`<option value="${esc(value)}"></option>`).join('');};populate();
  const apply=defaults=>{for(const key of ['equipment','kind','temperature','target','time'])field(key).value=defaults[key];field('kind').dispatchEvent(new Event('change'));field('temperature').dispatchEvent(new Event('input'));};
- field('equipment').addEventListener('change',()=>{const currentTime=field('time').value;const defaults=storageDefaults(state.records,field('date').value,field('equipment').value);if(defaults.kind){apply({...defaults,time:currentTime});}else{field('kind').value='';field('temperature').value='';field('target').value='';field('kind').dispatchEvent(new Event('change'));field('temperature').dispatchEvent(new Event('input'));}});
+ const selectEquipment=()=>{const currentTime=field('time').value;const defaults=storageDefaults(state.records,field('date').value,field('equipment').value);if(defaults.kind){apply({...defaults,time:currentTime});}else{field('kind').value='';field('temperature').value='';field('target').value='';field('kind').dispatchEvent(new Event('change'));field('temperature').dispatchEvent(new Event('input'));}};field('equipment').addEventListener('change',selectEquipment);field('equipment').addEventListener('input',()=>{if(storageDefaults(state.records,field('date').value,field('equipment').value).kind)selectEquipment();});
  field('kind').addEventListener('change',()=>{field('target').value=field('kind').value==='Freezer'?'0 °F':field('kind').value==='Refrigerator'?'35 °F':'';});
  field('date').addEventListener('change',()=>{if(!field('date').checkValidity())return;populate();if(!editing)apply(storageDefaults(state.records,field('date').value));});
 }
@@ -99,6 +99,7 @@ window.addEventListener('beforeunload',e=>{if(menuDirty||$('#editor').open){e.pr
 function connection(){const controlled=!!navigator.serviceWorker?.controller;$('#connection').textContent=controlled?(navigator.onLine?'Offline ready · saved locally':'Offline · saved locally'):'Local browser · preparing offline';}
 window.addEventListener('online',connection);window.addEventListener('offline',connection);
 try{db=await new Promise((resolve,reject)=>{const request=indexedDB.open('spruce-kitchen',1);request.onupgradeneeded=()=>request.result.createObjectStore('data');request.onsuccess=()=>resolve(request.result);request.onerror=()=>reject(request.error);});state=await load();render();if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js').then(()=>navigator.serviceWorker.ready).then(connection).catch(()=>{$('#connection').textContent='Local storage · offline cache unavailable';});navigator.serviceWorker.addEventListener('controllerchange',connection);}connection();}catch(error){$('#main').innerHTML=`<div class="error">Local database could not open. Enable browser storage and reload. ${esc(error.message)}</div>`;}
+
 
 
 
