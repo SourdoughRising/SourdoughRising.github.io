@@ -4,7 +4,7 @@ A static, dependency-free kitchen paperwork hub for GitHub Pages. Open `index.ht
 
 ## Publish on GitHub Pages
 
-Copy `index.html`, `style.css`, `app.js`, `menu.js`, `menu-text.js`, `menu-cycles.js`, `receipts.js`, `inventory-aliases.js`, `mileage-routes.js`, `deliveries.js`, `compliance-guide.js`, `substitutions.js`, and `theme.js` to your repository root. In the repository’s Settings → Pages, select **Deploy from a branch**, your branch, and **/(root)**. All asset paths are relative, so project Pages URLs work too. No build command is required. An existing website should be preserved: these files can instead go in a `kitchen` subfolder and be visited at `/kitchen/`.
+Copy `index.html`, `style.css`, `app.js`, `menu.js`, `menu-crediting.js`, `menu-text.js`, `menu-cycles.js`, `receipts.js`, `inventory-aliases.js`, `mileage-routes.js`, `deliveries.js`, `compliance-guide.js`, `substitutions.js`, and `theme.js` to your repository root. In the repository’s Settings → Pages, select **Deploy from a branch**, your branch, and **/(root)**. All asset paths are relative, so project Pages URLs work too. No build command is required. An existing website should be preserved: these files can instead go in a `kitchen` subfolder and be visited at `/kitchen/`.
 
 ## Included
 
@@ -74,3 +74,6 @@ The workspace includes a static CACFP reference reviewed September 24, 2026: chi
 ## Substitutions
 
 Add and edit rows containing Name, Room Number, Component, Avoid, and Substitute. Click any column heading to sort ascending, then again for descending; room numbers sort naturally (2 before 10). Rows persist locally and are included in backups. Older backups without substitutions remain compatible. Follow facility rules for identifying information and keep medical documents in the approved confidential system.
+
+
+Menu item highlighting: one food per line or semicolon. Green identifies recognized plain produce as generally creditable, not complete meal compliance. Yellow requests product, recipe, age, or portion verification. Expand each colored item for its reason. Exact inventory matches report available label images without treating uploads as verified evidence.
