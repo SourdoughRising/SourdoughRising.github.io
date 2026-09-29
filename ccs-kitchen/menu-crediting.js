@@ -8,7 +8,7 @@ function menuMilkKind(text){
 function menuItemAssessment(text){
   const name=text.trim().toLowerCase().replace(/\s+/g,' ');
   const milk=menuMilkKind(text);
-  if(milk==='dairy')return {state:'yellow',label:'Check type & portion',reason:'Ordinary dairy milk does not need a CN label, PFS, or recipe. Confirm milk type, age group, and serving amount. Include milk in meal production records if your state or sponsor requires those records; this is separate from product crediting documentation.'};
+  if(milk==='dairy')return {state:'green',label:'Creditable food',reason:'Ordinary dairy milk does not need a CN label, PFS, or recipe. Confirm milk type, age group, and serving amount. Include milk in meal production records if your state or sponsor requires those records; this is separate from product crediting documentation.'};
   if(milk==='substitute')return {state:'yellow',label:'Check substitution documentation',reason:'Nondairy milk substitute: verify nutrient equivalence and the written substitution request, or follow the applicable disability-related modification documentation. Confirm age suitability and portion. Do not assume it credits like dairy milk.'};
   // Exact simple-food matches only: a component name inside a recipe is not evidence.
   const produce=/^(?:(?:fresh|plain|raw|steamed|frozen) )?(?:apples?|apple slices|bananas?|oranges?|orange slices|strawberries|blueberries|raspberries|blackberries|mixed berries|peaches|pears|pineapple|watermelon|cantaloupe|grapes|broccoli|carrots|green beans|peas|corn|cauliflower|spinach|cucumber|cucumber slices|bell pepper strips)$/;
